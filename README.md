@@ -1,14 +1,13 @@
 # Soundscape Generator
 
-## When adding OpenAL to a Visual Studio c++ project
+## When adding SoundscapeGenerator to a Visual Studio for the first time.
 
-[Download](https://www.openal.org/downloads/) - OpenAL 1.1 Core SDK (zip)
+[Download and Install](https://www.openal.org/downloads/) - OpenAL 1.1 Core SDK (zip)
 
 ### Add this to C/C++ -> General -> Additional Include Directories
 ```
 C:\Program Files (x86)\OpenAL 1.1 SDK\include 
 ```
-
 
 ### Add  this to Linker -> General -> Additional Library Directories
 ```
@@ -24,5 +23,6 @@ OpenAL32.lib
 _CRT_SECURE_NO_WARNINGS
 ```
 
+### Change solution platform from x64 to x86
 
 
