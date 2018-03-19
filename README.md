@@ -1,6 +1,6 @@
 # Soundscape Generator
 
-## When adding SoundscapeGenerator to a Visual Studio for the first time.
+## When adding SoundscapeGenerator to Visual Studio for the first time.
 
 [Download and Install](https://www.openal.org/downloads/) - OpenAL 1.1 Core SDK (zip)
 
