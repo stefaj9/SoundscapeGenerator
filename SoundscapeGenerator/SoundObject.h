@@ -13,5 +13,7 @@ public:
 
 	Wav wav;
 	string name;
+	bool isPlaying;
+	int handle;
 };
 

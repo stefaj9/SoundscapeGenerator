@@ -20,6 +20,7 @@ SoundChannel::SoundChannel()
 SoundChannel::~SoundChannel()
 {
 	this->soundEngine.deinit();
+	delete wav;
 }
 
 void SoundChannel::setVelocity(int velocity)
@@ -58,12 +59,43 @@ void SoundChannel::addWav(string newWav)
 
 void SoundChannel::playWavNumber(int index)
 {
-	index = index - 1;
+	if (index <= this->getWavCount()) {
+		index = index - 1;
 
-	this->wav->at(index)->wav.load(this->wav->at(index)->name.c_str());
-	this->wav->at(index)->wav.setLooping(1);
-	int handle = this->soundEngine.play(this->wav->at(index)->wav);
+		this->wav->at(index)->wav.load(this->wav->at(index)->name.c_str());
+		this->wav->at(index)->wav.setLooping(1);
+		this->wav->at(index)->isPlaying = true;
+		int handle = this->soundEngine.play(this->wav->at(index)->wav);
+		this->wav->at(index)->handle = handle;
+	}
+}
+
+void SoundChannel::fadeInWavNumber(int index, int time)
+{
+	if (index <= this->getWavCount()) {
+		index = index - 1;
+
+		this->wav->at(index)->wav.load(this->wav->at(index)->name.c_str());
+		this->wav->at(index)->wav.setLooping(1);
+		this->wav->at(index)->isPlaying = true;
+		int handle = this->soundEngine.play(this->wav->at(index)->wav);
+		this->wav->at(index)->handle = handle;
+
+		this->soundEngine.setVolume(handle, 0);
+		this->soundEngine.fadeVolume(handle, 1, time);
+	}
+
+}
+
+void SoundChannel::fadeOutWavNumber(int index, int time)
+{
+	if (index <= this->getWavCount()) {
+		index = index - 1;
+
+		int handle = this->wav->at(index)->handle;
 
 
-
+		this->soundEngine.fadeVolume(handle, 0, time);
+		this->wav->at(index)->isPlaying = false;
+	}
 }

@@ -6,6 +6,7 @@ SoundObject::SoundObject(Wav wav, string name)
 {
 	this->wav = wav;
 	this->name = name;
+	this->isPlaying = false;
 }
 
 

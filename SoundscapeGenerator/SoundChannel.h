@@ -18,6 +18,8 @@ public:
 	int getWavCount();
 	void addWav(std::string);
 	void playWavNumber(int);
+	void fadeInWavNumber(int, int);
+	void fadeOutWavNumber(int, int);
 
 	Soloud soundEngine;
 	vector<SoundObject*>* wav;
