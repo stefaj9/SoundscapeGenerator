@@ -1,8 +1,6 @@
 #pragma once
-#include <vector>
-#include <string>
-#include "soloud.h"
 #include "soloud_wav.h"
+#include <string>
 
 using namespace std;
 using namespace SoLoud;
@@ -10,20 +8,10 @@ using namespace SoLoud;
 class SoundObject
 {
 public:
-	SoundObject();
+	SoundObject(Wav wav, string name);
 	~SoundObject();
-	void setVelocity(int);
-	int getVelocity();
-	int getWavCount();
-	void addWav(std::string);
-	void playWavNumber(int);
 
-	Soloud soundEngine;
-	vector<Wav>* wavFiles;
-	vector<string>* wavNames;
-
-private:
-	int velocity;
-	int wavCount;
+	Wav wav;
+	string name;
 };
 
