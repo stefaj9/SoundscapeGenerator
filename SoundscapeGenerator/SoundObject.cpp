@@ -10,7 +10,6 @@ SoundObject::SoundObject()
 {
 	this->velocity = MIN_VELOCITY;
 	this->wavCount = 0;
-	this->isLocked = false;
 
 	this->soundEngine.init();
 
@@ -21,6 +20,7 @@ SoundObject::SoundObject()
 
 SoundObject::~SoundObject()
 {
+	this->soundEngine.deinit();
 }
 
 void SoundObject::setVelocity(int velocity)
@@ -49,25 +49,20 @@ int SoundObject::getWavCount()
 
 void SoundObject::addWav(string newWav)
 {
-	if (!isLocked) {
-		Wav tmp;
-		this->wavFiles->push_back(tmp);
-		this->wavNames->push_back(newWav);
-		this->wavCount++;
-	}
+	Wav tmp;
+	this->wavFiles->push_back(tmp);
+	this->wavNames->push_back(newWav);
+	this->wavCount++;
 }
 
-void SoundObject::loadWavs()
-{
-	if (!isLocked) {
-		
-		for (int i = 0; i < wavCount; i++) {
-			this->wavFiles->at(i).load(this->wavNames->at(i).c_str());
-		}
+void SoundObject::playWavNumber(int index)
+{	
+	index = index - 1;
 
+	this->wavFiles->at(index).load(this->wavNames->at(index).c_str());
+	this->wavFiles->at(index).setLooping(1);
+	int handle = this->soundEngine.play(this->wavFiles->at(index));
 
-
-		isLocked = true;
-	}
+	
 
 }

@@ -16,7 +16,7 @@ public:
 	int getVelocity();
 	int getWavCount();
 	void addWav(std::string);
-	void loadWavs();
+	void playWavNumber(int);
 
 	Soloud soundEngine;
 	vector<Wav>* wavFiles;
@@ -25,6 +25,5 @@ public:
 private:
 	int velocity;
 	int wavCount;
-	bool isLocked;
 };
 
