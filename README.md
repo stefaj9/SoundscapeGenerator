@@ -12,7 +12,7 @@ C:\SoLoud\include
 
 ### Add  this to Linker -> General -> Additional Library Directories
 ```
-C:\SoLoudlibs
+C:\SoLoud\lib
 ```
 
 ### Add  this at the end  to Linker -> Input -> Additional Dependencies 
