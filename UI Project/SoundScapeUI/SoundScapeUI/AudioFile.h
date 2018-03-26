@@ -14,5 +14,6 @@ public:
 	SoLoud::Wav soundFile;
 	std::string name;
 	bool isLoaded;	
+	bool isPlaying;
 };
 

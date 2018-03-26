@@ -8,6 +8,7 @@ AudioFile::AudioFile(SoLoud::Wav soundFile, std::string name)
 	this->soundFile = soundFile;
 	this->name = name;
 	this->isLoaded = false;
+	this->isPlaying = false;
 }
 
 AudioFile::~AudioFile()

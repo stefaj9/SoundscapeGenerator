@@ -11,8 +11,10 @@ public:
 	AudioChannel();
 	~AudioChannel();
 
-	void addAudioFile(std::string);
+	int addAudioFile(std::string);
 	void playAudioFile(int);
+	void fadeInAudioFile(int,int);
+	void fadeOutAudioFile(int, int);
 
 	void setVolume(int, int);
 
@@ -20,5 +22,5 @@ public:
 	std::vector<AudioFile*>* audioFiles;
 
 	int wavCount;
+	long velocity;
 };
-
