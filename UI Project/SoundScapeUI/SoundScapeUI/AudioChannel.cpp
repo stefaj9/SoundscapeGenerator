@@ -11,7 +11,7 @@ AudioChannel::AudioChannel()
 	velocity = 0;
 	isFaded = false;
 
-	gLPFilter.setParams(SoLoud::BiquadResonantFilter::LOWPASS, 44100, 20000, 0.4f);
+	gLPFilter.setParams(SoLoud::BiquadResonantFilter::LOWPASS, 44100, 20000, 0.1f);
 }
 
 
@@ -40,6 +40,19 @@ int AudioChannel::addAudioFile(std::string uri)
 	return wavCount;
 }
 
+void AudioChannel::playOnce(int index) {
+	if (index <= wavCount && !this->audioFiles->at(index-1)->isPlaying) {
+		index--;
+		if (!audioFiles->at(index)->isLoaded) {
+			this->audioFiles->at(index)->soundFile.load(
+				this->audioFiles->at(index)->name.c_str());
+			this->audioFiles->at(index)->soundFile.setFilter(0, &gLPFilter);
+			this->audioFiles->at(index)->isLoaded = true;
+		}
+		this->audioFiles->at(index)->ID = this->audioEngine.play(this->audioFiles->at(index)->soundFile);
+	}
+}
+
 void AudioChannel::playAudioFile(int index)
 {
 	if (index <= wavCount && !this->audioFiles->at(index-1)->isPlaying) {
@@ -49,8 +62,7 @@ void AudioChannel::playAudioFile(int index)
 				this->audioFiles->at(index)->name.c_str());
 			this->audioFiles->at(index)->soundFile.setLooping(1);
 			this->audioFiles->at(index)->soundFile.setFilter(0, &gLPFilter);
-			this->audioFiles->at(index)->isLoaded = true;
-			
+			this->audioFiles->at(index)->isLoaded = true;			
 		}
 		this->audioFiles->at(index)->ID = this->audioEngine.play(this->audioFiles->at(index)->soundFile);
 		this->audioFiles->at(index)->isPlaying = true;
@@ -79,9 +91,9 @@ void AudioChannel::fadeInFilter()
 	if (!this->isFaded) {
 		for (int i = 0; i < wavCount; i++) {
 			this->audioEngine.fadeFilterParameter(this->audioFiles->at(i)->ID, 0,
-				SoLoud::BiquadResonantFilter::FREQUENCY, 200, 6.0f);
+				SoLoud::BiquadResonantFilter::FREQUENCY, 440, 4.0f);
 		}
-		gLPFilter.setParams(SoLoud::BiquadResonantFilter::LOWPASS, 44100, 200, 0.4f);
+		gLPFilter.setParams(SoLoud::BiquadResonantFilter::LOWPASS, 44100, 440, 0.4f);
 		this->isFaded = true;
 	}
 }
@@ -105,4 +117,11 @@ void AudioChannel::setVolume(int index, int volume)
 	if (audioFiles->at(index)->isLoaded) {
 		this->audioEngine.setVolume(this->audioFiles->at(index)->ID, (float)volume/100);
 	}
+}
+
+void AudioChannel::setGlobalVolume(int volume)
+{
+	float newVol = (float)volume * 0.4f;
+
+	this->audioEngine.setGlobalVolume(1.0f + newVol);
 }

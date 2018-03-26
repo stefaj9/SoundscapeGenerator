@@ -14,6 +14,7 @@ public:
 
 	int addAudioFile(std::string);
 	void playAudioFile(int);
+	void playOnce(int);
 	void fadeInAudioFile(int,int);
 	void fadeOutAudioFile(int, int);
 
@@ -21,6 +22,7 @@ public:
 	void fadeOutFilter();
 
 	void setVolume(int, int);
+	void setGlobalVolume(int);
 
 	SoLoud::Soloud audioEngine;
 	SoLoud::BiquadResonantFilter gLPFilter;
