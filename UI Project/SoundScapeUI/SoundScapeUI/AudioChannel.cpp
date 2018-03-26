@@ -52,7 +52,7 @@ void AudioChannel::setVolume(int index, int volume)
 {
 	index--;
 	if (audioFiles->at(index)->isLoaded) {
-		//this->audioEngine.setVolume(this->audioFiles->at(index)->ID, volume);
+		this->audioEngine.setVolume(this->audioFiles->at(index)->ID, (float)volume/100);
 	}
 
 	std::cout << volume << std::endl;
