@@ -9,9 +9,9 @@ AudioChannel::AudioChannel()
 	audioFiles = new std::vector<AudioFile*>();
 	wavCount = 0;
 	velocity = 0;
+	isFaded = false;
 
-
-	//addAudioFile("Audio/Rain/rain1.wav");
+	gLPFilter.setParams(SoLoud::BiquadResonantFilter::LOWPASS, 44100, 20000, 0.4f);
 }
 
 
@@ -34,6 +34,7 @@ int AudioChannel::addAudioFile(std::string uri)
 	AudioFile* newAudioFile = new AudioFile(newWav, uri);
 
 	this->audioFiles->push_back(newAudioFile);
+
 	wavCount++;
 
 	return wavCount;
@@ -47,6 +48,7 @@ void AudioChannel::playAudioFile(int index)
 			this->audioFiles->at(index)->soundFile.load(
 				this->audioFiles->at(index)->name.c_str());
 			this->audioFiles->at(index)->soundFile.setLooping(1);
+			this->audioFiles->at(index)->soundFile.setFilter(0, &gLPFilter);
 			this->audioFiles->at(index)->isLoaded = true;
 			
 		}
@@ -69,6 +71,30 @@ void AudioChannel::fadeOutAudioFile(int index, int seconds)
 	if (index <= wavCount && this->audioFiles->at(index-1)->isPlaying) {
 		this->audioEngine.fadeVolume(this->audioFiles->at(index-1)->ID, 0, seconds);
 		this->audioFiles->at(index-1)->isPlaying = false;
+	}
+}
+
+void AudioChannel::fadeInFilter()
+{
+	if (!this->isFaded) {
+		for (int i = 0; i < wavCount; i++) {
+			this->audioEngine.fadeFilterParameter(this->audioFiles->at(i)->ID, 0,
+				SoLoud::BiquadResonantFilter::FREQUENCY, 200, 6.0f);
+		}
+		gLPFilter.setParams(SoLoud::BiquadResonantFilter::LOWPASS, 44100, 200, 0.4f);
+		this->isFaded = true;
+	}
+}
+
+void AudioChannel::fadeOutFilter()
+{
+	if (this->isFaded) {
+		for (int i = 0; i < wavCount; i++) {
+			this->audioEngine.fadeFilterParameter(this->audioFiles->at(i)->ID, 0,
+				SoLoud::BiquadResonantFilter::FREQUENCY, 20000, 6.0f);
+		}
+		gLPFilter.setParams(SoLoud::BiquadResonantFilter::LOWPASS, 44100, 20000, 0.4f);
+		this->isFaded = false;
 	}
 }
 
