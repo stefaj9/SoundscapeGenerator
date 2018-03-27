@@ -91,9 +91,9 @@ void AudioChannel::fadeInFilter()
 	if (!this->isFaded) {
 		for (int i = 0; i < wavCount; i++) {
 			this->audioEngine.fadeFilterParameter(this->audioFiles->at(i)->ID, 0,
-				SoLoud::BiquadResonantFilter::FREQUENCY, 440, 4.0f);
+				SoLoud::BiquadResonantFilter::FREQUENCY, 400, 4.0f);
 		}
-		gLPFilter.setParams(SoLoud::BiquadResonantFilter::LOWPASS, 44100, 440, 0.4f);
+		gLPFilter.setParams(SoLoud::BiquadResonantFilter::LOWPASS, 44100, 400, 0.4f);
 		this->isFaded = true;
 	}
 }
